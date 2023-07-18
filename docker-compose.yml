@@ -1,0 +1,13 @@
+
+version: '3.3'
+services:
+  testvaultserver1:
+    build: ./vault-server/
+    cap_add:
+      - IPC_LOCK
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+      APPROLE_ROLE_ID:         dummy_app
+      TERRAFORM_TOKEN:         dummyTerraformToken
+    ports:
+      - "8200:8200"
