@@ -23,7 +23,7 @@
      │          │                               │
      │     Orchestrator/Terraform/         go run main.go
    copy_config2vault_secret2temp.sh             ▲
-                                                │
+                │                               │
                 │                               │
                 │                               │
                 │ 2. Write Secret-ID            │ 4. read Secret-ID
