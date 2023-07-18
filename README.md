@@ -1,7 +1,39 @@
 
 # Vault PoC
 
-## the scheme:
+## the flow
+
+```
+
+ 3. put config.yaml as dummy_config_yaml/reseller1/region99
+
+     ┌──────►  Vault ◄──────────────────────────┐
+     │          ▲                               │
+     │          │                               │
+     │          │                               │
+     │          │                               │
+     │          │                               │
+     │          │ 1. Get Secret-ID              │ 5. fetch config.yaml
+     │          │                               │    at path dummy_config_yaml/reseller1/region99
+     │          │                               │
+     │          │                               │
+     │          │                               │
+     │          │                               │
+     │          │                               │
+     │          │                               │
+     │     Orchestrator/Terraform/         go run main.go
+   copy_config2vault_secret2temp.sh             ▲
+                                                │
+                │                               │
+                │                               │
+                │ 2. Write Secret-ID            │ 4. read Secret-ID
+                │                               │
+                │                               │
+                │                               │
+                ▼                               │
+         /tmp/secret ───────────────────────────┘
+
+```
 
 1. create vault role
 2. create vault policy
