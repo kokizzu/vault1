@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
+	"os"
 	"time"
 
 	vault "github.com/hashicorp/vault/api"
@@ -35,14 +37,24 @@ func TryUseVault(address, configPath string) (string, error) {
 		return ``, fmt.Errorf(`failed to create vault client: %w`, err)
 	}
 
+	file, err := os.Open(secretFile)
+	if err != nil {
+		return ``, fmt.Errorf(`failed to open secret file: %w`, err)
+	}
+	defer file.Close()
+	secretId, err := io.ReadAll(file)
+	if err != nil {
+		return ``, fmt.Errorf(`failed to read secret file: %w`, err)
+	}
+
 	approleSecretID := &approle.SecretID{
-		FromFile: secretFile,
+		FromString: string(secretId),
 	}
 
 	appRoleAuth, err := approle.NewAppRoleAuth(
 		AppRoleID,
 		approleSecretID,
-		approle.WithWrappingToken(), // only required if the SecretID is response-wrapped
+		//approle.WithWrappingToken(), // only required if the SecretID is response-wrapped, if X-Vault-Wrap-TTL header set on copy_config2vault_secret2tmp.sh
 	)
 	if err != nil {
 		return ``, fmt.Errorf(`failed to create approle auth: %w`, err)

@@ -27,7 +27,7 @@ vault auth enable approle
 # ref: https://www.vaultproject.io/api/auth/approle#parameters
 vault write auth/approle/role/dummy_role \
     token_policies=reseller1-policy \
-    token_num_uses=9000 \
+    token_num_uses=0 \
     secret_id_ttl="32d" \
     token_ttl="32d" \
     token_max_ttl="32d"

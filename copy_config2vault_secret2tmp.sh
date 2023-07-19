@@ -6,10 +6,13 @@ VAULT_ADDRESS="127.0.0.1:8200"
 curl \
    --request POST \
    --header "X-Vault-Token: ${TERRAFORM_TOKEN}" \
-   --header "X-Vault-Wrap-TTL: 32d" \
       "${VAULT_ADDRESS}/v1/auth/approle/role/dummy_role/secret-id" > /tmp/debug
 
-cat /tmp/debug | jq -r '.wrap_info.token' > /tmp/secret
+# if using wrapping token, it the secret id file can only be used once
+#   --header "X-Vault-Wrap-TTL: 32d" \
+#cat /tmp/debug | jq -r '.wrap_info.token' > /tmp/secret
+
+cat /tmp/debug | jq -r '.data.secret_id' > /tmp/secret
 
 # check appsecret exists
 cat /tmp/debug
