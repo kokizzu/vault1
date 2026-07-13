@@ -52,5 +52,12 @@
 docker compose up --build 
 
 ./copy_config2vault_secret2tmp.sh
-go run main.go
+make run CMD='go run main.go'
 ```
+
+## Maintenance checklist
+
+- [x] Go runtime updated to 1.26.5.
+- [x] Vault API and AppRole auth dependencies refreshed.
+- [x] `make test` compiles the example without requiring Vault.
+- [x] `make verify-dependency-security` and `make vulncheck` check dependency security.

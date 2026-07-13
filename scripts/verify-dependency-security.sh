@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-modules="$(go list -m -f '{{.Path}} {{.Version}}' all)"
+modules="$(go list -m -f '{{.Path}} {{if .Replace}}{{.Replace.Version}}{{else}}{{.Version}}{{end}}' all)"
 
 selected_version() {
   awk -v module="$1" '$1 == module { print $2 }' <<<"$modules"
@@ -36,6 +36,7 @@ require_min() {
 }
 
 require_min github.com/go-jose/go-jose/v3 v3.0.5
+require_min github.com/go-jose/go-jose/v4 v4.1.4
 require_min golang.org/x/crypto v0.53.0
 
 printf 'dependency security graph ok\n'
